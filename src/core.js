@@ -1,7 +1,7 @@
 import {List, Map} from 'immutable';
 
 
-function getWiners(vote) {
+function getWinners(vote) {
     if (!vote) {
         return [];
     }
@@ -19,15 +19,18 @@ function getWiners(vote) {
 
 
 export function setEntries(state, entries) {
-    return state.set('entries', List(entries));
+    if (state) {
+        return state.set('entries', List(entries));
+    }
+    return Map({'entries': List(entries)});
 }
 
 export function vote(state, entry) {
-    return state.updateIn(['vote', 'tally', entry], 0, tally=>tally + 1);
+    return state.updateIn(['tally', entry], 0, tally=>tally + 1);
 }
 
 export function next(state) {
-    const entries = state.get('entries').concat(getWiners(state.get('vote')));
+    const entries = state.get('entries').concat(getWinners(state.get('vote')));
     if (entries.size === 1) {
         return state.remove('entries').remove('vote').set('winner', entries.first());
     }
