@@ -57,7 +57,7 @@ function sub1(filter, tree, coll) {
 
 }
 
-function sumTable(tree, fieldName, sub) {
+function flatTable(tree, fieldName, sub) {
     const mainFields = Object.keys(tree);
 
     let hashed = mainFields.reduce((columns, mainField)=> {
@@ -126,19 +126,19 @@ describe('flatten hierarchy', () => {
 
 
     it('should be able to flat it and calculate total', () => {
-        const totals = sumTable(tree['GBP'], 'ladder', partial(sub));
+        const totals = flatTable(tree['GBP'], 'ladder', partial(sub));
         expect(totals).to.deep.equal(total_expected);
         console.log(totals);
     });
 
     it('should flatten NPV and have security details', ()=> {
-        const totals = sumTable(tree['GBP'], 'ladder', partial(sub1, 'NPV'));
+        const totals = flatTable(tree['GBP'], 'ladder', partial(sub1, 'NPV'));
         expect(totals).to.deep.equal(npv_expected);
         console.log(totals);
     });
 
     it('should flatten NPV and have security details', ()=> {
-        const totals = sumTable(tree['GBP'], 'ladder', partial(sub1, 'DV01'));
+        const totals = flatTable(tree['GBP'], 'ladder', partial(sub1, 'DV01'));
         expect(totals).to.deep.equal(dv01_expected);
         console.log(totals);
     });
